@@ -1,11 +1,14 @@
 # todo
 
-This is an android app built using the codepath tutorial. 
+This is an android app built using the [codepath tutorial] (http://courses.codepath.com/snippets/intro_to_android/prework)<br>
+
 
 User stories implemented are: <br>
 Successfully add and remove items from the todo list<br>
 Support for editing todo items <br>
 Persist todo items and retrieve them properly on app restart<br>
+
+I am still working on additional features and will update them here once they are complete. 
 
 ![alt tag](https://github.com/pshegde/todo/blob/master/gifs/todo.gif)
 
