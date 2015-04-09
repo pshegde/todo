@@ -9,4 +9,4 @@ Persist todo items and retrieve them properly on app restart
 
 ![alt tag](https://github.com/pshegde/todo/blob/master/gifs/todo.gif)
 
-GIF created with LiceCap.
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
