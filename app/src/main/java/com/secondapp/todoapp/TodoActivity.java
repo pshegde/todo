@@ -7,23 +7,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class TodoActivity extends ActionBarActivity {
-    private ArrayList<String> items;
-    private ArrayAdapter<String> aTodoItemsAdapter; //translate string/class/model to a view
+    private List<TodoItem> items; //stores priority and item name
+    private TodoAdapter aTodoItemsAdapter; //translate string/class/model to a view
     private ListView lvItems;
     private EditText etNewItem;
     private final int REQUEST_CODE = 20;
+    private TodoItemDatabase todoItemDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +30,7 @@ public class TodoActivity extends ActionBarActivity {
         getSupportActionBar().setIcon(R.drawable.todo_icon);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setTitle("Simple Todo");
+        todoItemDatabase = new TodoItemDatabase(getBaseContext());
 
 //        LinearLayout myTitleBar = (LinearLayout) findViewById(R.id.title_bar_layout);
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -43,20 +41,26 @@ public class TodoActivity extends ActionBarActivity {
         readItems();
         lvItems = (ListView)findViewById(R.id.lvItems);
         etNewItem = (EditText) findViewById(R.id.etNewItem);
-        aTodoItemsAdapter = new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_list_item_1,items);
+
+        aTodoItemsAdapter = new TodoAdapter(getBaseContext(), items);
+        //new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_list_item_1,array);
         lvItems.setAdapter(aTodoItemsAdapter);
         //add to adapter automatically adds to view
         //aTodoItemsAdapter.add("Item 3");
         setupListViewListener();
+//        for(TodoItem item:items) {
+//            todoItemDatabase.deleteTodoItem(item);
+//        }
+//        aTodoItemsAdapter.notifyDataSetChanged();
     }
 
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View item, int position, long id) {
+                todoItemDatabase.deleteTodoItem(items.get(position));
                 items.remove(position);
                 aTodoItemsAdapter.notifyDataSetChanged();
-                writeItems();
                 return true;
             }
         });
@@ -65,26 +69,27 @@ public class TodoActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(TodoActivity.this, EditItemActivity.class);
-                i.putExtra("text_clicked_item", items.get(position).toString());
+                i.putExtra("text_clicked_item", items.get(position).getBody().toString());
                 i.putExtra("position_clicked_item", position);
                 //startActivity(i); // brings up the second activity
                 startActivityForResult(i, REQUEST_CODE);
             }
-
         });
     }
 
     private void populateItems() {
-        items = new ArrayList<String>();
-        items.add("First item");
-        items.add("Second item");
+        items = new ArrayList<>();
+        items.add(new TodoItem("First item",1));
+
     }
 
     public void addAddedItems(View view) {
         String itemText = etNewItem.getText().toString();
-        aTodoItemsAdapter.add(itemText);
+        TodoItem newItem = new TodoItem(itemText,1);
+        aTodoItemsAdapter.add(newItem);
         etNewItem.setText("");
-        writeItems();
+        todoItemDatabase.addTodoItem(newItem);
+       // writeItems();
     }
 
     @Override
@@ -98,9 +103,10 @@ public class TodoActivity extends ActionBarActivity {
            // Toast.makeText(this, editedClickedItem, Toast.LENGTH_SHORT).show();
 
             //write to item in array and notify adapter
-            items.set(position,editedClickedItem);
+            TodoItem item =items.get(position);
+            item.setBody(editedClickedItem);
             aTodoItemsAdapter.notifyDataSetChanged();
-            writeItems();
+            todoItemDatabase.updateTodoItem(item);
         }
     }
 
@@ -127,24 +133,30 @@ public class TodoActivity extends ActionBarActivity {
     }
 
     private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir,"todo.txt");
-        try {
-            items = new ArrayList<>(FileUtils.readLines(todoFile));
-        } catch(IOException e) {
-            items = new ArrayList<>();
-        }
+        //get items from sqlite and add to items map
+//        File filesDir = getFilesDir();
+//        File todoFile = new File(filesDir,"todo.txt");
+        items = todoItemDatabase.getAllTodoItems();
+
+//        try {
+//            items = new HashMap<>(FileUtils.readLines(todoFile));
+//        } catch(IOException e) {
+//            items = new ArrayList<>();
+//        }
     }
 
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir,"todo.txt");
-        try{
-            FileUtils.writeLines(todoFile, items);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-    }
+//    private void writeItems() {
+//        File filesDir = getFilesDir();
+//        File todoFile = new File(filesDir,"todo.txt");
+//        try{
+//            FileUtils.writeLines(todoFile, items);
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
+//
+//        for (TodoItem item:items){
+//            todoItemDatabase.addTodoItem(item);
+//        }
+//    }
 
 }
