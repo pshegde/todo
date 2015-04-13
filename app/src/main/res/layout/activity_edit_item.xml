@@ -9,7 +9,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/edit_text_save"
         android:id="@+id/btnEditText"
         android:singleLine="false"
         android:onClick="onSave"
@@ -38,5 +38,16 @@
         android:layout_below="@+id/tvEditText"
         android:layout_marginTop="58dp"
         android:singleLine="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_text_cancel"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/btnEditText"
+        android:layout_toRightOf="@+id/btnEditText"
+        android:layout_toEndOf="@+id/btnEditText"
+        android:singleLine="true"
+        android:onClick="onCancel" />
 
 </RelativeLayout>

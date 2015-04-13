@@ -19,7 +19,7 @@ public class TodoActivity extends ActionBarActivity {
     private TodoAdapter aTodoItemsAdapter; //translate string/class/model to a view
     private ListView lvItems;
     private EditText etNewItem;
-    private final int REQUEST_CODE = 20;
+    private final int REQUEST_CODE_EDIT = 20;
     private TodoItemDatabase todoItemDatabase;
 
     @Override
@@ -72,7 +72,7 @@ public class TodoActivity extends ActionBarActivity {
                 i.putExtra("text_clicked_item", items.get(position).getBody().toString());
                 i.putExtra("position_clicked_item", position);
                 //startActivity(i); // brings up the second activity
-                startActivityForResult(i, REQUEST_CODE);
+                startActivityForResult(i, REQUEST_CODE_EDIT);
             }
         });
     }
@@ -95,7 +95,7 @@ public class TodoActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_EDIT) {
             // Extract name value from result extras
             String editedClickedItem = data.getExtras().getString("edited_clicked_item");
             int position = data.getExtras().getInt("position_clicked_item", 0);

@@ -43,6 +43,10 @@ public class EditItemActivity extends ActionBarActivity {
         finish(); // closes the activity, pass data to parent
     }
 
+    public void onCancel(View view){
+        finish();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
