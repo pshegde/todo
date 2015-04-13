@@ -7,10 +7,18 @@
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Body" />
+        android:text="Body"
+        android:typeface="monospace"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
     <TextView
         android:id="@+id/tvPriority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Priority" />
+        android:text="Priority"
+        android:typeface="monospace"
+        />
 </LinearLayout>
