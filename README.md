@@ -15,6 +15,7 @@ User stories implemented are: <br>
 9. In exit text user should be able to edit the priority<br>
 10. The list should be sorted according to priority<br>
 11. Added validation so that when dialog is open user should not be able to click add again<br>
+12. Cancel button in the edit activity<br>
 
 Update 1: this gif shows the new functionality implemented : user stories 5 to 11 from above
 
