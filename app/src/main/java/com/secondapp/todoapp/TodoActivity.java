@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class TodoActivity extends ActionBarActivity {
@@ -56,6 +57,8 @@ public class TodoActivity extends ActionBarActivity {
 
         aTodoItemsAdapter = new TodoAdapter(getBaseContext(), items);
         //new ArrayAdapter<String>(getBaseContext(),android.R.layout.simple_list_item_1,array);
+
+        sort();
         lvItems.setAdapter(aTodoItemsAdapter);
         //add to adapter automatically adds to view
         //aTodoItemsAdapter.add("Item 3");
@@ -81,6 +84,7 @@ public class TodoActivity extends ActionBarActivity {
                 TodoItem newItem = new TodoItem(itemText,priority);
                 addAddedItems(newItem);
                 dialog.dismiss();
+                btnAdd.setEnabled(true);
             }
         });
         btnAdd.setOnClickListener(new OnClickListener() {
@@ -92,6 +96,7 @@ public class TodoActivity extends ActionBarActivity {
                 }else {
                     dialog.setContentView(dialogView);
                     dialog.show();
+                    btnAdd.setEnabled(false);
                 }
             }
         });
@@ -129,6 +134,7 @@ public class TodoActivity extends ActionBarActivity {
 
     public void addAddedItems(TodoItem newItem) {
         aTodoItemsAdapter.add(newItem);
+        sort();
         etNewItem.setText("");
         todoItemDatabase.addTodoItem(newItem);
        // writeItems();
@@ -149,6 +155,7 @@ public class TodoActivity extends ActionBarActivity {
             TodoItem item =items.get(position);
             item.setBody(editedClickedItem);
             item.setPriority(priority);
+            sort();
             aTodoItemsAdapter.notifyDataSetChanged();
             todoItemDatabase.updateTodoItem(item);
         }
@@ -174,6 +181,15 @@ public class TodoActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sort(){
+        aTodoItemsAdapter.sort(new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                return Integer.valueOf(lhs.getPriority()).compareTo(Integer.valueOf(rhs.getPriority()));   //or whatever your sorting algorithm
+            }
+        });
     }
 
     private void readItems() {
