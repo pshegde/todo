@@ -14,8 +14,8 @@
         android:singleLine="false"
         android:onClick="onSave"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@+id/etPriority"
+        android:layout_alignStart="@+id/etPriority" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,11 +23,9 @@
         android:text="Edit item below:"
         android:id="@+id/tvEditText"
         android:textSize="@dimen/tvEditText_size"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/etEditText"
+        android:layout_alignEnd="@+id/etEditText" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,9 +33,10 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etEditText"
+        android:singleLine="false"
         android:layout_below="@+id/tvEditText"
-        android:layout_marginTop="58dp"
-        android:singleLine="false" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,5 +48,23 @@
         android:layout_toEndOf="@+id/btnEditText"
         android:singleLine="true"
         android:onClick="onCancel" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spn_edit_priority"
+        android:layout_below="@+id/etPriority"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_text_textview_priority"
+        android:id="@+id/etPriority"
+        android:textSize="@dimen/tvEditText_size"
+        android:layout_below="@+id/etEditText"
+        android:layout_alignLeft="@+id/tvEditText"
+        android:layout_alignStart="@+id/tvEditText" />
 
 </RelativeLayout>

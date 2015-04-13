@@ -11,4 +11,5 @@
     <string name="edit_text_cancel">cancel</string>
     <string name="edit_text_save">Save</string>
     <string name="btn_add_in_list_from_Dialog">Add</string>
+    <string name="edit_text_textview_priority">Edit priority:</string>
 </resources>

@@ -68,11 +68,8 @@ public class TodoActivity extends ActionBarActivity {
         final View dialogView = li.inflate(R.layout.popup_add_item, null);
 
         spnSetPriority = (Spinner) dialogView.findViewById(R.id.spnSetPriority);
-        String[] arraySpinner = new String[] {
-                "3", "2", "1"
-        };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
+                android.R.layout.simple_spinner_item, TodoConstants.arraySpinner);
         spnSetPriority.setAdapter(adapter);
 
         btnDialogAdd = (Button)dialogView.findViewById(R.id.btnDialogAdd);
@@ -117,6 +114,7 @@ public class TodoActivity extends ActionBarActivity {
                 Intent i = new Intent(TodoActivity.this, EditItemActivity.class);
                 i.putExtra("text_clicked_item", items.get(position).getBody().toString());
                 i.putExtra("position_clicked_item", position);
+                i.putExtra("priority_clicked_item",items.get(position).getPriority());
                 //startActivity(i); // brings up the second activity
                 startActivityForResult(i, REQUEST_CODE_EDIT);
             }
@@ -143,12 +141,14 @@ public class TodoActivity extends ActionBarActivity {
             // Extract name value from result extras
             String editedClickedItem = data.getExtras().getString("edited_clicked_item");
             int position = data.getExtras().getInt("position_clicked_item", 0);
+            int priority = data.getExtras().getInt("priority_clicked_item", 0);
             // Toast the name to display temporarily on screen
            // Toast.makeText(this, editedClickedItem, Toast.LENGTH_SHORT).show();
 
             //write to item in array and notify adapter
             TodoItem item =items.get(position);
             item.setBody(editedClickedItem);
+            item.setPriority(priority);
             aTodoItemsAdapter.notifyDataSetChanged();
             todoItemDatabase.updateTodoItem(item);
         }

@@ -6,11 +6,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.Arrays;
 
 
 public class EditItemActivity extends ActionBarActivity {
     private EditText etEditText;
+    private Spinner spnEditPriority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class EditItemActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_edit_item);
         String textClickedItem = getIntent().getStringExtra("text_clicked_item");
+        int priorityClickedItem = getIntent().getIntExtra("priority_clicked_item", 0);
         //Toast.makeText(getApplicationContext(), textClickedItem, Toast.LENGTH_SHORT).show();
         etEditText = (EditText)findViewById(R.id.etEditText);
         etEditText.setText(textClickedItem);
@@ -29,18 +36,30 @@ public class EditItemActivity extends ActionBarActivity {
         etEditText.setFocusable(true);
         etEditText.requestFocus();
         //Be sure the user's cursor in the text field is at the end of the current text value and is in focus by default.
+
+        spnEditPriority = (Spinner) findViewById(R.id.spn_edit_priority);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, TodoConstants.arraySpinner);
+        spnEditPriority.setAdapter(adapter);
+        spnEditPriority.setSelection(Arrays.asList(TodoConstants.arraySpinner).indexOf(priorityClickedItem));
     }
 
     public void onSave(View view) {
-        Intent data = new Intent();
-        // Pass relevant data back as a result
-        int positionClickedItem = getIntent().getIntExtra("position_clicked_item", 0);
-       // Toast.makeText(getApplicationContext(), String.valueOf(positionClickedItem), Toast.LENGTH_SHORT).show();
-        data.putExtra("edited_clicked_item", etEditText.getText().toString()); //etName.getText().toString());
-        data.putExtra("position_clicked_item", positionClickedItem);
-        // Activity finished ok, return the data
-        setResult(RESULT_OK, data); // set result code and bundle data for response
-        finish(); // closes the activity, pass data to parent
+        String editTextValue = etEditText.getText().toString();
+        if(editTextValue.isEmpty()){
+            String errorEmptyField = "Please enter some text";
+            Toast.makeText(getBaseContext(), errorEmptyField, Toast.LENGTH_SHORT).show();
+        }else {
+            Intent data = new Intent();
+            // Pass relevant data back as a result
+            int positionClickedItem = getIntent().getIntExtra("position_clicked_item", 0);
+            // Toast.makeText(getApplicationContext(), String.valueOf(positionClickedItem), Toast.LENGTH_SHORT).show();
+            data.putExtra("edited_clicked_item", editTextValue); //etName.getText().toString());
+            data.putExtra("position_clicked_item", positionClickedItem);
+            data.putExtra("priority_clicked_item", Integer.valueOf(spnEditPriority.getSelectedItem().toString()));
+            // Activity finished ok, return the data
+            setResult(RESULT_OK, data); // set result code and bundle data for response
+            finish(); // closes the activity, pass data to parent
+        }
     }
 
     public void onCancel(View view){
