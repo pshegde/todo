@@ -13,6 +13,9 @@ Display priorities<br>
 Should show error message if empty text<br>
 Add a dialog and spinner to allow user to select priority<br>
 In exit text user should be able to edit the priority<br>
+The list should be sorted according to priority<br>
+Due dates can be added while creating the todo item<br>
+Added validation so that when dialog is open user should not be able to click add again<br>
 
 I am still working on additional features and will update them here once they are complete. 
 
