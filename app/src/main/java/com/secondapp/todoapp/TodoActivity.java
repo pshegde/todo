@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +88,14 @@ public class TodoActivity extends ActionBarActivity {
         });
         btnAdd.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                dialog.setContentView(dialogView);
-                dialog.show();
+                String itemText = etNewItem.getText().toString();
+                if(itemText.isEmpty()){
+                    String errorEmptyField = "Please enter some text";
+                    Toast.makeText(getBaseContext(), errorEmptyField, Toast.LENGTH_SHORT).show();
+                }else {
+                    dialog.setContentView(dialogView);
+                    dialog.show();
+                }
             }
         });
     }
