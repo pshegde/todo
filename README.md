@@ -10,6 +10,9 @@ Persist todo items and retrieve them properly on app restart<br>
 Persist to sqlite<br>
 Add a custom adapter<br>
 Display priorities<br>
+Should show error message if empty text<br>
+Add a dialog and spinner to allow user to select priority<br>
+In exit text user should be able to edit the priority<br>
 
 I am still working on additional features and will update them here once they are complete. 
 
