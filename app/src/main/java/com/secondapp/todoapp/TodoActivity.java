@@ -1,18 +1,24 @@
 package com.secondapp.todoapp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TodoActivity extends ActionBarActivity {
     private List<TodoItem> items; //stores priority and item name
@@ -21,6 +27,11 @@ public class TodoActivity extends ActionBarActivity {
     private EditText etNewItem;
     private final int REQUEST_CODE_EDIT = 20;
     private TodoItemDatabase todoItemDatabase;
+    private boolean click=true;
+    private Button btnAdd;
+    private Dialog dialog ;
+    private Spinner spnSetPriority;
+    private Button btnDialogAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +59,38 @@ public class TodoActivity extends ActionBarActivity {
         //add to adapter automatically adds to view
         //aTodoItemsAdapter.add("Item 3");
         setupListViewListener();
-//        for(TodoItem item:items) {
-//            todoItemDatabase.deleteTodoItem(item);
-//        }
-//        aTodoItemsAdapter.notifyDataSetChanged();
+
+        dialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        final LinearLayout mainLayout = new LinearLayout(this);
+        LayoutInflater li = LayoutInflater.from(this);
+        final View dialogView = li.inflate(R.layout.popup_add_item, null);
+
+        spnSetPriority = (Spinner) dialogView.findViewById(R.id.spnSetPriority);
+        String[] arraySpinner = new String[] {
+                "3", "2", "1"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        spnSetPriority.setAdapter(adapter);
+
+        btnDialogAdd = (Button)dialogView.findViewById(R.id.btnDialogAdd);
+        btnDialogAdd.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String itemText = etNewItem.getText().toString();
+                int priority = Integer.valueOf(spnSetPriority.getSelectedItem().toString());
+                TodoItem newItem = new TodoItem(itemText,priority);
+                addAddedItems(newItem);
+                dialog.dismiss();
+            }
+        });
+        btnAdd.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                dialog.setContentView(dialogView);
+                dialog.show();
+            }
+        });
     }
 
     private void setupListViewListener() {
@@ -83,9 +122,7 @@ public class TodoActivity extends ActionBarActivity {
 
     }
 
-    public void addAddedItems(View view) {
-        String itemText = etNewItem.getText().toString();
-        TodoItem newItem = new TodoItem(itemText,1);
+    public void addAddedItems(TodoItem newItem) {
         aTodoItemsAdapter.add(newItem);
         etNewItem.setText("");
         todoItemDatabase.addTodoItem(newItem);

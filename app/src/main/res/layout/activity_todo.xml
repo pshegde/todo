@@ -33,6 +33,5 @@
         android:layout_alignBottom="@+id/etNewItem"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
-        android:onClick="addAddedItems"
         android:hint="@string/addItem" />
 </RelativeLayout>
